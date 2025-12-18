@@ -1,1 +1,1 @@
-FUture project for a portfolio.
+Future project for a portfolio.
