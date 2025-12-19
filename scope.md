@@ -192,7 +192,7 @@ docker-compose.yml
   - `docs: add scope and readmes`
   - `chore: init repo structure`
 
-**Día 2**
+**Día 2**  
 - Crear solución .NET + proyectos por capas (vacíos).
 - Swagger + health endpoint.
 - Commit(s):

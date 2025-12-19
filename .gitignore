@@ -51,4 +51,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
+##docker env
+.env
+.env.local
 

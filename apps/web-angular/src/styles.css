@@ -11,9 +11,12 @@
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #d2d5d8 ;
     }
     
   /* secure spaces in the content */
     main {
     margin-top: 0;
     }
+
+    

@@ -9,6 +9,7 @@
     z-index: 100; /* on top */
     padding: 48px 0 0;
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    background-color: #eaebec ;
 }
 
 /* visible on scrolling */
@@ -34,4 +35,18 @@
 .sidebar .nav-link:hover {
     color: #0d6efd;
     background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Botón Usuario - fondo celeste con letras blancas */
+.btn-usuario {
+    background-color: #17a2b8; /* Celeste (Bootstrap info) */
+    color: white;
+    border-color: #17a2b8;
+}
+
+/* Efecto hover para el botón Usuario */
+.btn-usuario:hover {
+    background-color: #138496; /* Celeste más oscuro al pasar el mouse */
+    border-color: #117a8b;
+    color: white;
 }
