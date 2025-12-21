@@ -29,7 +29,7 @@ Modernizar la experiencia de “Autogestión Alumnos” (legacy ASP) en un **dem
 ---
 
 ## 3) Estilo de arquitectura
-### Enfoque recomendado: Monolito modular por capas (Clean Architecture liviana)
+### Monolito modular por capas (Clean Architecture liviana)
 **API (por proyectos):**
 - `Autogestion.Domain`  
   Entidades + reglas puras (sin EF, sin HTTP)
@@ -55,8 +55,8 @@ Fuera de scope (por ahora):
 
 ---
 
-## 5) Reglas de negocio (nivel intermedio)
-### Correlatividades (intermedio)
+## 5) Reglas de negocio 
+### Correlatividades 
 - Para **cursar**: requiere materias **regularizadas o aprobadas** (según regla configurada por materia/plan).
 - Para **rendir examen**: requiere materias **aprobadas** (más estricto que cursar).
 - Diferenciar estados:
@@ -74,8 +74,8 @@ Fuera de scope (por ahora):
 
 ---
 
-## 6) Datos ficticios (seed)
-### Cantidad sugerida para demo
+## 6) Datos ficticios
+
 - 20 estudiantes
 - 2 carreras / planes
 - 35–45 materias
@@ -143,7 +143,7 @@ docker-compose.yml
 
 ---
 
-## 10) Git workflow (realista)
+## 10) Git workflow
 ### Branches
 - `main`: estable, listo para mostrar
 - `develop`: integración diaria
