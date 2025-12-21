@@ -1,6 +1,6 @@
-# ERD - Autogestion Alumnos (MVP)
+# DER - Autogestion Alumnos (MVP)
 
-This ERD covers the minimal schema for the MVP described in scope.md.
+Schema
 
 ```mermaid
 erDiagram
