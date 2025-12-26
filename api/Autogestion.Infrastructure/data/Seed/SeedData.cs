@@ -1,4 +1,5 @@
 using Autogestion.Domain.Entities;
+using Autogestion.Infrastructure.Data;
 
 namespace Autogestion.Infrastructure.Data.Seed;
 
