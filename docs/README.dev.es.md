@@ -1,23 +1,23 @@
-# Guía de implementación (DTO + API + Angular) y ejecución local
+﻿# Guia de implementacion (DTO + API + Angular) y ejecucion local
 
-Este documento explica el flujo completo implementado para el primer botón (Plan de Estudios), por qué se eligió esta arquitectura y cómo replicar el patrón para los demás botones. También incluye pasos detallados para levantar la API con base de datos en memoria y el frontend Angular.
+Este documento explica el flujo completo implementado para el primer boton (Plan de Estudios), por que se eligio esta arquitectura y como replicar el patron para los demas botones. Tambien incluye pasos detallados para levantar la API con PostgreSQL local (migraciones) y el frontend Angular.
 
 ---
 
-## 1) ¿Qué se implementó y por qué?
+## 1) Que se implemento y por que?
 
-### Objetivo del primer botón
-El botón **Plan de Estudios** ahora:
+### Objetivo del primer boton
+El boton **Plan de Estudios** ahora:
 - navega a una ruta real (`/plan`),
 - consulta la API,
-- muestra datos reales provenientes de una base en memoria,
+- muestra datos reales provenientes de PostgreSQL local,
 - maneja estados de carga y error.
 
-### Decisiones arquitectónicas (resumen)
+### Decisiones arquitectonicas (resumen)
 - **DTOs en Application**: desacopla la API de las entidades EF y evita exponer modelos de dominio directamente.
-- **Servicio de aplicación (IPlanService)**: separa la lógica de consulta y mapeo a DTO.
+- **Servicio de aplicacion (IPlanService)**: separa la logica de consulta y mapeo a DTO.
 - **Infraestructura (PlanService)**: contiene la consulta EF y el mapeo a DTO.
-- **DB en memoria + seed**: permite trabajar localmente sin Postgres ni migraciones, garantizando datos consistentes al iniciar.
+- **PostgreSQL + migraciones + seed opcional**: permite trabajar con datos reales y un seed controlado en Development.
 - **Angular con servicios**: las pantallas consumen datos reales usando un servicio HTTP simple.
 
 ---
@@ -40,7 +40,7 @@ Frontend (Angular):
 
 ---
 
-## 3) Cómo implementar un DTO (paso a paso)
+## 3) Como implementar un DTO (paso a paso)
 
 Ejemplo aplicado: Plan de Estudios.
 
@@ -52,7 +52,7 @@ Ejemplo aplicado: Plan de Estudios.
 
 2) Crear interfaz de servicio:
    - Archivo: `api/Autogestion.Application/Interfaces/IPlanService.cs`
-   - Método: `GetPlanForStudentAsync(int studentId, CancellationToken ct)`
+   - Metodo: `GetPlanForStudentAsync(int studentId, CancellationToken ct)`
 
 3) Implementar el servicio en Infrastructure:
    - Archivo: `api/Autogestion.Infrastructure/Services/PlanService.cs`
@@ -66,9 +66,9 @@ Ejemplo aplicado: Plan de Estudios.
 
 ---
 
-## 4) Cómo replicar el patrón para otros botones
+## 4) Como replicar el patron para otros botones
 
-Para cada botón:
+Para cada boton:
 
 1) Backend
    - Crear DTOs nuevos.
@@ -81,17 +81,18 @@ Para cada botón:
    - Crear servicio HTTP en `services`.
    - Crear componente en `components/<modulo>`.
    - Agregar ruta en `app.routes.ts`.
-   - Agregar botón o link desde el dashboard.
+   - Agregar boton o link desde el dashboard.
 
 3) Seed (si aplica)
-   - Agregar datos mínimos para que la pantalla muestre contenido.
+   - Agregar datos minimos para que la pantalla muestre contenido.
 
 ---
 
-## 5) Cómo levantar la API en memoria (paso a paso)
+## 5) Como levantar la API con PostgreSQL local (paso a paso)
 
 Requisitos:
 - .NET 8 SDK
+- PostgreSQL local (o Docker)
 
 Pasos:
 1) Ir a la carpeta de la API:
@@ -99,21 +100,36 @@ Pasos:
 cd api/Autogestion.Api
 ```
 
-2) Ejecutar:
+2) Configurar la cadena de conexion en `appsettings.Development.json`:
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=Bd_sysacad;Username=postgres;Password=admin"
+  },
+  "SeedData": true
+}
+```
+
+3) Aplicar migraciones:
+```powershell
+dotnet ef database update --project ../Autogestion.Infrastructure/Autogestion.Infrastructure.csproj --startup-project ./Autogestion.Api.csproj
+```
+
+4) Ejecutar:
 ```powershell
 dotnet run
 ```
 
-3) Abrir Swagger:
+5) Abrir Swagger:
 - http://localhost:5018/swagger
 
 Notas:
-- La base de datos en memoria se inicializa automáticamente.
-- Los datos se crean en el seed al arrancar.
+- El seed solo corre en Development si `SeedData` es `true`.
+- Para desactivar el seed, cambiar `SeedData` a `false`.
 
 ---
 
-## 6) Cómo levantar Angular (paso a paso)
+## 6) Como levantar Angular (paso a paso)
 
 Requisitos:
 - Node.js LTS
@@ -138,21 +154,21 @@ npm start
 - http://localhost:4200
 
 5) Probar:
-- Entrar a `/plan` o usar el botón "Plan de Estudios" del dashboard.
+- Entrar a `/plan` o usar el boton "Plan de Estudios" del dashboard.
 
 ---
 
 ## 7) Preguntas frecuentes
 
-**¿Por qué no se usan migraciones?**  
-Porque el objetivo es trabajar local con datos controlados y sin depender de Postgres.
+**Por que usar migraciones?**  
+Porque la base se crea de forma reproducible y el esquema queda versionado.
 
-**¿Se puede volver a Postgres luego?**  
-Sí. Basta con volver a `UseNpgsql(...)`, restaurar la cadena de conexión y usar migraciones.
+**Como desactivo el seed?**  
+Poner `SeedData: false` en `appsettings.Development.json`.
 
 ---
 
-## 8) Checklist rápido de replicación
+## 8) Checklist rapido de replicacion
 
 - [ ] DTO creado en Application  
 - [ ] Interfaz de servicio creada  
@@ -161,5 +177,5 @@ Sí. Basta con volver a `UseNpgsql(...)`, restaurar la cadena de conexión y usa
 - [ ] Modelo TS + servicio HTTP en Angular  
 - [ ] Componente con estados (loading/error)  
 - [ ] Ruta agregada  
-- [ ] Botón/link conectado  
-- [ ] Seed mínimo actualizado  
+- [ ] Boton/link conectado  
+- [ ] Seed minimo actualizado  

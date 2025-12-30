@@ -9,8 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseInMemoryDatabase("AutogestionDb"));
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IPlanService, PlanService>();
 builder.Services.AddCors(options =>
@@ -25,16 +26,19 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    if (builder.Configuration.GetValue<bool>("SeedData"))
+    {
+        using var scope = app.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        SeedData.EnsureSeedData(dbContext);
+    }
 }
 
 app.UseCors("AllowLocalDev");
 app.UseHttpsRedirection();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    SeedData.EnsureSeedData(dbContext);
-}
+// Se conecta a la base local; no aplica seed automatico.
 
 app.MapGet("/students/me/plan", async (IPlanService planService, CancellationToken cancellationToken) =>
 {

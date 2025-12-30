@@ -247,3 +247,53 @@ Crear en GitHub:
 - Issues por Semana 1 (Día 1–4)
 
 Listo para arrancar con “Día 1”.
+
+## 16) Plan de trabajo (7 dias)
+Day 1 - Base de datos real + migraciones
+- Configurar Npgsql en `Program.cs` y eliminar InMemory
+- Configurar `ConnectionStrings` y `DbContext` con Postgres
+- Ejecutar migracion inicial y validar en Postgres
+- Seed minimo: planes, materias, alumnos, correlativas, exam calls
+- ADR: decision de DB + migraciones
+
+Day 2 - Dominio y reglas nucleo
+- Crear entidades faltantes (prerequisites, enrollments, exam_calls, results)
+- Definir enums de estados (PENDING/ENROLLED/REGULAR/APPROVED/FAILED)
+- Reglas de correlatividad (curso/examen)
+- Unit tests para correlatividades
+- ADR: reglas de negocio y estados
+
+Day 3 - Application (casos de uso + DTOs)
+- DTOs de Plan, Estado, Examenes, Cursadas
+- Casos de uso para lecturas (queries)
+- Casos de uso para inscripciones (commands)
+- Result pattern para validaciones
+- ADR: CQRS liviano + Result
+
+Day 4 - Infraestructura + validaciones
+- Repositorios/servicios EF para entidades nuevas
+- Validaciones: duplicados, cupo, choque horario
+- Integration test basico de inscripcion
+- Ajustar Seed con datos consistentes
+- ADR: estrategia de validaciones
+
+Day 5 - API + Seguridad
+- `POST /auth/login` + `GET /me`
+- Endpoints de plan, estado, exam-calls, course-offers
+- Endpoints de inscripciones (exam/course)
+- Policies + CORS restringido
+- Swagger con auth
+
+Day 6 - Frontend base
+- Environments + base URL
+- Interceptor + guard de auth
+- Servicios por feature
+- OnPush + signals donde aplique
+- Arreglar `Dashboard` standalone
+
+Day 7 - Frontend integracion + cierre
+- Conectar pantallas con API real
+- Estados UX (loading/empty/error)
+- Flujo end-to-end completo
+- README + capturas
+- Checklist DoD
