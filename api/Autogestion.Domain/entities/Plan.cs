@@ -1,5 +1,8 @@
 namespace Autogestion.Domain.Entities;
 
+/// <summary>
+/// Represents an academic plan and its related students and subjects.
+/// </summary>
 public class Plan 
 
 {

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autogestion.Application", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autogestion.Infrastructure", "Autogestion.Infrastructure\Autogestion.Infrastructure.csproj", "{DC9F32D0-08A6-468B-85A8-71C0897282E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autogestion.Domain.Tests", "Autogestion.Domain.Tests\Autogestion.Domain.Tests.csproj", "{A6F6B1A4-4A84-4B45-9B04-20E3E44C2B88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{DC9F32D0-08A6-468B-85A8-71C0897282E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC9F32D0-08A6-468B-85A8-71C0897282E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC9F32D0-08A6-468B-85A8-71C0897282E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6F6B1A4-4A84-4B45-9B04-20E3E44C2B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6F6B1A4-4A84-4B45-9B04-20E3E44C2B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6F6B1A4-4A84-4B45-9B04-20E3E44C2B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6F6B1A4-4A84-4B45-9B04-20E3E44C2B88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
