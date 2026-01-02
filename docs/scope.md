@@ -127,11 +127,11 @@ Errores (estándar):
 ---
 
 ## 9) Estructura de repo
-/apps/web-angular
-/api/Autogestion.Api
-/api/Autogestion.Application
-/api/Autogestion.Domain
-/api/Autogestion.Infrastructure
+/frontend
+/backend/Autogestion.Api
+/backend/Autogestion.Application
+/backend/Autogestion.Domain
+/backend/Autogestion.Infrastructure
 /docs
 /adr
 erd.md

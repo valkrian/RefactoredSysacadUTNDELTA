@@ -1,6 +1,6 @@
 @Autogestion.Api_HostAddress = http://localhost:5018
 
-GET {{Autogestion.Api_HostAddress}}/weatherforecast/
+GET {{Autogestion.Api_HostAddress}}/Students/me/plan
 Accept: application/json
 
 ###

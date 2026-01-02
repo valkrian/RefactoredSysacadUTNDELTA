@@ -45,23 +45,23 @@ Frontend (Angular):
 Ejemplo aplicado: Plan de Estudios.
 
 1) Crear DTOs en Application:
-   - Archivo: `api/Autogestion.Application/DTOs/PlanDto.cs`
+   - Archivo: `backend/Autogestion.Application/DTOs/PlanDto.cs`
    - Contenido:
      - `PlanDto`: datos principales del plan.
      - `PlanSubjectDto`: materias del plan.
 
 2) Crear interfaz de servicio:
-   - Archivo: `api/Autogestion.Application/Interfaces/IPlanService.cs`
+   - Archivo: `backend/Autogestion.Application/Interfaces/IPlanService.cs`
    - Metodo: `GetPlanForStudentAsync(int studentId, CancellationToken ct)`
 
 3) Implementar el servicio en Infrastructure:
-   - Archivo: `api/Autogestion.Infrastructure/Services/PlanService.cs`
+   - Archivo: `backend/Autogestion.Infrastructure/Services/PlanService.cs`
    - Consulta EF:
      - `Include(s => s.Plan).ThenInclude(p => p.Subjects)`
    - Mapeo a DTO.
 
 4) Exponer endpoint en API:
-   - Archivo: `api/Autogestion.Api/Program.cs`
+   - Archivo: `backend/Autogestion.Api/Program.cs`
    - Endpoint: `GET /students/me/plan`
 
 ---
@@ -97,7 +97,7 @@ Requisitos:
 Pasos:
 1) Ir a la carpeta de la API:
 ```powershell
-cd api/Autogestion.Api
+cd backend/Autogestion.Api
 ```
 
 2) Configurar la cadena de conexion en `appsettings.Development.json`:
@@ -137,7 +137,7 @@ Requisitos:
 Pasos:
 1) Ir al frontend:
 ```powershell
-cd apps/web-angular
+cd frontend
 ```
 
 2) Instalar dependencias:
