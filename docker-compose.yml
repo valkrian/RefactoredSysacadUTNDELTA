@@ -1,9 +1,6 @@
 # docker-compose.yml
 # confing for docker comp
 
-version: '3.8'
-# formato de la file de docker (compatible con compose v2)
-
 services:
   # Servicios = contenedores que queremos ejecutar
   # En este caso, solo PostgreSQL----*
@@ -24,6 +21,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-autogestion_db}
       POSTGRES_USER: ${POSTGRES_USER:-autogestion_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-autogestion_password}
+
+      
     
     ports:
       # Mapeo de puertos
@@ -36,23 +35,13 @@ services:
       - postgres_data:/var/lib/postgresql/data
       # postgres_data es un volumen nombrado (esto no lo sabía, investigar)
     
-    healthcheck:
-      # Verificación de salud del contenedor
-      # Docker verifica que PostgreSQL funcione
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-autogestion_user}"]
-      # Comando que verifica si PostgreSQL está listo
-      # Usa la variable de entorno POSTGRES_USER con valor por defecto
-      interval: 10s
-      # Verifica cada 10 segundos (segun gpt para develop taría ok para produ mas interval)
-      timeout: 5s
-      # Timeout de 5 segundos
-      retries: 5
-      # Reintenta 5 veces antes de marcar como no saludable
-      start_period: 30s
-      #para evitar falsos negativoss
+
 
 volumes:
   # Definición de volúmenes nombrados
   postgres_data:
     # Volumen para persistir los datos de PostgreSQL
     # Se crea automáticamente la primera vez que ejecutas docker-compose up
+
+    
+# 3 docker files uno para cada parte del programa---

@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2>Plan de Estudios</h2>
+      <p class="text-muted">Materias agrupadas por año y cuatrimestre.</p>
+
+      <div *ngIf="loading()" class="alert alert-info">Cargando plan...</div>
+      <div *ngIf="error()" class="alert alert-danger">{{ error() }}</div>
+
+      <div *ngIf="plan() as currentPlan">
+        <div class="card mb-3">
+          <div class="card-body">
+            <strong>{{ currentPlan.planName }}</strong>
+            <span class="text-muted">
+              - {{ currentPlan.career }} ({{ currentPlan.yearVersion }})
+            </span>
+          </div>
+        </div>
+
+        <div *ngIf="currentPlan.subjects.length === 0" class="alert alert-warning">
+          No hay materias cargadas para este plan.
+        </div>
+
+        <div *ngIf="currentPlan.subjects.length > 0" class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Materia</th>
+                <th>Ano</th>
+                <th>Cuatrimestre</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let subject of currentPlan.subjects">
+                <td>{{ subject.code }}</td>
+                <td>{{ subject.name }}</td>
+                <td>{{ subject.year }}</td>
+                <td>{{ subject.term }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
