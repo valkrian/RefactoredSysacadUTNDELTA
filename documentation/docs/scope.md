@@ -160,7 +160,7 @@ docker-compose.yml
 
 ### Seguimiento diario y push mensual
 - Diario: commits locales en `feature/*` (minimo 1 por dia).
-- Diario: registro breve en `docs/commit-log.md` (fecha + resumen + hash).
+- Diario: registro breve en `documentation/docs/commit-log.md` (fecha + resumen + hash).
 - Mensual: merge/push de `feature/*` -> `develop` (PR o merge directo).
 - Mensual: merge/push de `develop` -> `main` y tag `v0.x.0`.
 
@@ -223,7 +223,7 @@ Formato sugerido por día:
 - Checklist:
   - [ ] Implementación
   - [ ] Tests (si aplica)
-  - [ ] Docs/README breve
+  - [ ] Documentation/README breve
   - [ ] PR a develop
 
 ---
