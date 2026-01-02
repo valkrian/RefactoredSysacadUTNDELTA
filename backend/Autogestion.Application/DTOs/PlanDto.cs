@@ -17,3 +17,4 @@ public sealed class PlanSubjectDto
     public int Year { get; set; }
     public int Term { get; set; }
 }
+
