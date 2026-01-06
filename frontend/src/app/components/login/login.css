@@ -1,32 +1,79 @@
 .login-shell {
+  display: grid;
+  gap: var(--space-xl);
+  padding: var(--space-xl) 0;
+}
+
+.login-header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  min-height: 60vh;
+}
+
+.login-eyebrow {
+  color: var(--secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-xs);
+}
+
+.login-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-xl);
 }
 
 .login-card {
-  width: min(420px, 90%);
-  border: 1px solid #dee2e6;
-  border-radius: 12px;
-  padding: 2rem;
-  background: #fff;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  display: grid;
+  gap: var(--space-md);
 }
 
 .login-form {
   display: grid;
-  gap: 1rem;
+  gap: var(--space-md);
 }
 
 .login-form label {
   display: grid;
-  gap: 0.35rem;
+  gap: var(--space-xs);
   font-weight: 600;
 }
 
-.login-form input {
-  border: 1px solid #ced4da;
-  border-radius: 6px;
-  padding: 0.55rem 0.75rem;
+.login-links {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.link-muted {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.link-muted:hover {
+  text-decoration: underline;
+}
+
+.login-info .card-elevated {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.step-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--text-main);
+}
+
+.info-block h4 {
+  margin-bottom: var(--space-xs);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.login-footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
 }

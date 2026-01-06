@@ -1,36 +1,100 @@
-<div class="login-shell">
-  <div class="login-card">
-    <h2>Ingresar</h2>
-    <p>Accede con tu usuario demo.</p>
-
-    <form (ngSubmit)="submit()" class="login-form">
-      <label>
-        Email
-        <input
-          type="email"
-          name="email"
-          [(ngModel)]="email"
-          placeholder="demo@utn.local"
-          required
-        />
-      </label>
-
-      <label>
-        Password
-        <input
-          type="password"
-          name="password"
-          [(ngModel)]="password"
-          placeholder="demo"
-          required
-        />
-      </label>
-
-      <button class="btn btn-primary" type="submit" [disabled]="loading()">
-        {{ loading() ? 'Ingresando...' : 'Ingresar' }}
-      </button>
-    </form>
-
-    <div class="alert alert-danger mt-3" *ngIf="error()">{{ error() }}</div>
+<section class="login-shell">
+  <div class="login-header">
+    <div>
+      <p class="login-eyebrow">UTN DELTA</p>
+      <h1>Preinscripcion y Acceso</h1>
+      <p class="muted">
+        Ingreso institucional para estudiantes. Usa tu email y contraseña.
+      </p>
+    </div>
   </div>
-</div>
+
+  <div class="login-grid">
+    <div class="card-elevated login-card">
+      <h2 class="section-title">Ingreso</h2>
+      <p class="muted">Credenciales de prueba: demo@utn.local / demo.</p>
+
+      <form (ngSubmit)="submit()" class="login-form" aria-live="polite">
+        <label>
+          Email
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            placeholder=" "
+            required
+          />
+        </label>
+
+        <label>
+          Contraseña
+          <input
+            type="password"
+            name="password"
+            [(ngModel)]="password"
+            placeholder=" "
+            required
+          />
+        </label>
+
+        <button class="btn btn-primary w-100" type="submit" [disabled]="loading()">
+          {{ loading() ? 'Ingresando...' : 'Ingresar' }}
+        </button>
+      </form>
+
+      <div class="login-links">
+        <a href="#" class="link-muted">Olvidaste tu contraseña?</a>
+        <a href="#" class="link-muted">No tenes cuenta? Registrate</a>
+        <a href="#" class="link-muted">Necesitas ayuda? Contactanos</a>
+      </div>
+
+      <div class="alert alert-danger mt-3" *ngIf="error()">{{ error() }}</div>
+    </div>
+
+    <div class="login-info">
+      <div class="card-elevated">
+        <div class="alert alert-warning" role="alert">
+          <strong>Atención: información importante</strong>
+          <p class="mb-1">
+            Para completar la inscripción debes presentar documentación
+            presencial en Secretaría.
+          </p>
+          <p class="mb-0"><strong>Plazo máximo:</strong> 29/02/2024</p>
+        </div>
+
+        <h3 class="section-title">Pasos de inscripción</h3>
+        <ol class="step-list">
+          <li>
+            <strong>Paso 1:</strong> Registro digital en este portal.
+          </li>
+          <li>
+            <strong>Paso 2:</strong> Confirmación presencial con documentación
+            original.
+          </li>
+        </ol>
+
+        <div class="info-block">
+          <h4>Documentación requerida</h4>
+          <ul>
+            <li>DNI original y copia.</li>
+            <li>Titulo secundario o constancia.</li>
+            <li>Formulario de preinscripción firmado.</li>
+          </ul>
+        </div>
+
+        <div class="info-block">
+          <h4>Donde completar el paso 2</h4>
+          <p class="muted mb-0">
+            Secretaria de alumnos, de lunes a viernes 8:00 a 16:00.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="login-footer">
+    <p>
+      Inspirado en SIU Guarani. Portfolio de prueba para recruiters.
+    </p>
+  </footer>
+</section>
