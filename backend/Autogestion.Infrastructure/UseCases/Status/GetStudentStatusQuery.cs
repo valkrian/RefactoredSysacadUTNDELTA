@@ -1,6 +1,7 @@
 using Autogestion.Application.DTOs;
 using Autogestion.Application.Shared;
 using Autogestion.Application.UseCases.Status;
+using Autogestion.Domain.Enums;
 using Autogestion.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,12 +30,28 @@ public sealed class GetStudentStatusQuery : IGetStudentStatusQuery
 
         var subjectCount = student.Plan.Subjects.Count;
 
+        var approvedSubjects = await _dbContext.ExamResults
+            .Where(r => r.StudentId == studentId && r.Status == ExamResultStatus.Approved)
+            .Select(r => r.SubjectId)
+            .Distinct()
+            .ToListAsync(ct);
+
+        var regularSubjects = await _dbContext.CourseEnrollments
+            .Where(c => c.StudentId == studentId && c.Status == CourseEnrollmentStatus.Regular)
+            .Select(c => c.SubjectId)
+            .Distinct()
+            .ToListAsync(ct);
+
+        var approvedCount = approvedSubjects.Count;
+        var regularCount = regularSubjects.Except(approvedSubjects).Count();
+        var pendingCount = Math.Max(0, subjectCount - approvedCount - regularCount);
+
         var dto = new StudentStatusDto
         {
             StudentId = student.Id,
-            ApprovedCount = 0,
-            RegularCount = 0,
-            PendingCount = subjectCount,
+            ApprovedCount = approvedCount,
+            RegularCount = regularCount,
+            PendingCount = pendingCount,
             Average = null
         };
 

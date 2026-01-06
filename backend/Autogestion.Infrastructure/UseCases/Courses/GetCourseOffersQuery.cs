@@ -2,6 +2,7 @@ using Autogestion.Application.DTOs;
 using Autogestion.Application.Shared;
 using Autogestion.Application.UseCases.Courses;
 using Autogestion.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Autogestion.Infrastructure.UseCases.Courses;
 
@@ -14,9 +15,25 @@ public sealed class GetCourseOffersQuery : IGetCourseOffersQuery
         _dbContext = dbContext;
     }
 
-    public Task<Result<List<CourseOfferDto>>> ExecuteAsync(string? period, CancellationToken ct)
+    public async Task<Result<List<CourseOfferDto>>> ExecuteAsync(string? period, CancellationToken ct)
     {
-        var empty = new List<CourseOfferDto>();
-        return Task.FromResult(Result<List<CourseOfferDto>>.Ok(empty));
+        var resolvedPeriod = string.IsNullOrWhiteSpace(period) ? "2024-1" : period;
+
+        var offers = await _dbContext.Subjects
+            .AsNoTracking()
+            .OrderBy(s => s.Year)
+            .ThenBy(s => s.Term)
+            .ThenBy(s => s.Name)
+            .Select(s => new CourseOfferDto
+            {
+                CourseOfferId = s.Id,
+                SubjectId = s.Id,
+                Code = s.Code,
+                SubjectName = s.Name,
+                Period = resolvedPeriod
+            })
+            .ToListAsync(ct);
+
+        return Result<List<CourseOfferDto>>.Ok(offers);
     }
 }
