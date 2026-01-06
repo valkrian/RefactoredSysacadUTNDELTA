@@ -1,0 +1,25 @@
+<section class="status-wrapper">
+  <h2>Estado Academico</h2>
+
+  <div *ngIf="loading()" class="text-muted">Cargando...</div>
+  <div *ngIf="error()" class="alert alert-danger">{{ error() }}</div>
+
+  <div *ngIf="status()" class="status-grid">
+    <div class="status-card">
+      <span>Aprobadas</span>
+      <strong>{{ status()?.approvedCount }}</strong>
+    </div>
+    <div class="status-card">
+      <span>Regularizadas</span>
+      <strong>{{ status()?.regularCount }}</strong>
+    </div>
+    <div class="status-card">
+      <span>Pendientes</span>
+      <strong>{{ status()?.pendingCount }}</strong>
+    </div>
+    <div class="status-card">
+      <span>Promedio</span>
+      <strong>{{ status()?.average ?? '-' }}</strong>
+    </div>
+  </div>
+</section>

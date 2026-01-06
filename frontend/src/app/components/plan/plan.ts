@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
 import { PlanService } from '../../services/plan.service';
 import { Plan } from '../../models/plan.model';
 
@@ -9,6 +9,7 @@ import { Plan } from '../../models/plan.model';
   imports: [CommonModule],
   templateUrl: './plan.html',
   styleUrl: './plan.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlanComponent implements OnInit {
   readonly plan = signal<Plan | null>(null);
