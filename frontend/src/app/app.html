@@ -1,9 +1,9 @@
-﻿<div class="container-fluid">
+<div *ngIf="authService.isAuthenticated(); else authless" class="container-fluid">
   <div class="row">
     <nav class="col-md-3 col-lg-2 d-md-block sidebar">
       <div class="position-sticky pt-3">
         <div class="text-center mb-4">
-          <h4 class="text-primary">Autogestión</h4>
+          <h4 class="text-primary">Autogestion</h4>
         </div>
         
         <ul class="nav flex-column">
@@ -19,12 +19,12 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/estado" routerLinkActive="active">
-              Estado Académico
+              Estado Academico
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/examenes" routerLinkActive="active">
-              Exámenes
+              Examenes
             </a>
           </li>
           <li class="nav-item">
@@ -38,11 +38,15 @@
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Autogestión Alumnos</h1>
+        <h1 class="h2">Autogestion Alumnos</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary btn-usuario">
-              Usuario
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-secondary btn-usuario"
+              (click)="authService.logout()"
+            >
+              Salir
             </button>
           </div>
         </div>
@@ -52,3 +56,9 @@
     </main>
   </div>
 </div>
+
+<ng-template #authless>
+  <main class="container py-5">
+    <router-outlet />
+  </main>
+</ng-template>

@@ -1,0 +1,36 @@
+<div class="login-shell">
+  <div class="login-card">
+    <h2>Ingresar</h2>
+    <p>Accede con tu usuario demo.</p>
+
+    <form (ngSubmit)="submit()" class="login-form">
+      <label>
+        Email
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="demo@utn.local"
+          required
+        />
+      </label>
+
+      <label>
+        Password
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="demo"
+          required
+        />
+      </label>
+
+      <button class="btn btn-primary" type="submit" [disabled]="loading()">
+        {{ loading() ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+
+    <div class="alert alert-danger mt-3" *ngIf="error()">{{ error() }}</div>
+  </div>
+</div>
