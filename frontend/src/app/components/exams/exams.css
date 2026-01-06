@@ -1,0 +1,17 @@
+.exams-wrapper {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.exams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.exam-card {
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 1rem;
+  background: #fff;
+}

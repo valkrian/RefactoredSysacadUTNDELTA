@@ -1,4 +1,5 @@
 using Autogestion.Domain.Entities;
+using Autogestion.Domain.Enums;
 using Autogestion.Infrastructure.Data;
 
 namespace Autogestion.Infrastructure.Data.Seed;
@@ -46,6 +47,80 @@ public static class SeedData
 
         dbContext.Plans.Add(plan);
         dbContext.Students.Add(student);
+        dbContext.SaveChanges();
+
+        var subjectByCode = subjects.ToDictionary(s => s.Code);
+
+        var prerequisites = new List<Prerequisite>
+        {
+            new()
+            {
+                Subject = subjectByCode["SO-201"],
+                RequiresSubject = subjectByCode["PRG-103"],
+                Type = PrerequisiteType.ForCourse,
+                MinimumStatus = MinimumSubjectStatus.Regular
+            },
+            new()
+            {
+                Subject = subjectByCode["SO-201"],
+                RequiresSubject = subjectByCode["PRG-103"],
+                Type = PrerequisiteType.ForExam,
+                MinimumStatus = MinimumSubjectStatus.Approved
+            },
+            new()
+            {
+                Subject = subjectByCode["BD-202"],
+                RequiresSubject = subjectByCode["PRG-103"],
+                Type = PrerequisiteType.ForCourse,
+                MinimumStatus = MinimumSubjectStatus.Regular
+            }
+        };
+
+        var courseEnrollments = new List<CourseEnrollment>
+        {
+            new()
+            {
+                StudentId = student.Id,
+                SubjectId = subjectByCode["PRG-103"].Id,
+                Period = "2024-1",
+                Status = CourseEnrollmentStatus.Regular
+            }
+        };
+
+        var examResults = new List<ExamResult>
+        {
+            new()
+            {
+                StudentId = student.Id,
+                SubjectId = subjectByCode["PRG-103"].Id,
+                Date = DateTime.UtcNow.AddMonths(-2),
+                Grade = 8,
+                Status = ExamResultStatus.Approved
+            }
+        };
+
+        var examCalls = new List<ExamCall>
+        {
+            new()
+            {
+                SubjectId = subjectByCode["SO-201"].Id,
+                StartsAt = DateTime.UtcNow.AddDays(7).Date.AddHours(9),
+                EndsAt = DateTime.UtcNow.AddDays(7).Date.AddHours(11),
+                Capacity = 30
+            },
+            new()
+            {
+                SubjectId = subjectByCode["BD-202"].Id,
+                StartsAt = DateTime.UtcNow.AddDays(10).Date.AddHours(14),
+                EndsAt = DateTime.UtcNow.AddDays(10).Date.AddHours(16),
+                Capacity = 25
+            }
+        };
+
+        dbContext.Prerequisites.AddRange(prerequisites);
+        dbContext.CourseEnrollments.AddRange(courseEnrollments);
+        dbContext.ExamResults.AddRange(examResults);
+        dbContext.ExamCalls.AddRange(examCalls);
         dbContext.SaveChanges();
     }
 }

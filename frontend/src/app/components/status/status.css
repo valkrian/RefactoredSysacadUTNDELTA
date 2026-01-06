@@ -1,0 +1,23 @@
+.status-wrapper {
+  display: grid;
+  gap: 1rem;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.status-card {
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  padding: 1rem;
+  background: #f8f9fa;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.status-card strong {
+  font-size: 1.5rem;
+}

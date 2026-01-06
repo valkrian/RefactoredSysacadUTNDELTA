@@ -22,6 +22,100 @@ namespace Autogestion.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Autogestion.Domain.Entities.CourseEnrollment", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Period")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("StudentId", "SubjectId", "Period");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("CourseEnrollments");
+                });
+
+            modelBuilder.Entity("Autogestion.Domain.Entities.ExamCall", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("EndsAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("StartsAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("ExamCalls");
+                });
+
+            modelBuilder.Entity("Autogestion.Domain.Entities.ExamEnrollment", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ExamCallId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("EnrolledAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("StudentId", "ExamCallId");
+
+                    b.HasIndex("ExamCallId");
+
+                    b.ToTable("ExamEnrollments");
+                });
+
+            modelBuilder.Entity("Autogestion.Domain.Entities.ExamResult", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Grade")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("StudentId", "SubjectId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("ExamResults");
+                });
+
             modelBuilder.Entity("Autogestion.Domain.Entities.Plan", b =>
                 {
                     b.Property<int>("Id")
@@ -48,6 +142,27 @@ namespace Autogestion.Infrastructure.Migrations
                     b.HasIndex("Name");
 
                     b.ToTable("Plans");
+                });
+
+            modelBuilder.Entity("Autogestion.Domain.Entities.Prerequisite", b =>
+                {
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RequiresSubjectId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MinimumStatus")
+                        .HasColumnType("integer");
+
+                    b.HasKey("SubjectId", "RequiresSubjectId", "Type", "MinimumStatus");
+
+                    b.HasIndex("RequiresSubjectId");
+
+                    b.ToTable("Prerequisites");
                 });
 
             modelBuilder.Entity("Autogestion.Domain.Entities.Student", b =>
@@ -144,6 +259,93 @@ namespace Autogestion.Infrastructure.Migrations
                     b.ToTable("PlanSubject");
                 });
 
+            modelBuilder.Entity("Autogestion.Domain.Entities.CourseEnrollment", b =>
+                {
+                    b.HasOne("Autogestion.Domain.Entities.Student", "Student")
+                        .WithMany("CourseEnrollments")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Autogestion.Domain.Entities.Subject", "Subject")
+                        .WithMany("CourseEnrollments")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("Autogestion.Domain.Entities.ExamCall", b =>
+                {
+                    b.HasOne("Autogestion.Domain.Entities.Subject", "Subject")
+                        .WithMany("ExamCalls")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("Autogestion.Domain.Entities.ExamEnrollment", b =>
+                {
+                    b.HasOne("Autogestion.Domain.Entities.ExamCall", "ExamCall")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("ExamCallId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Autogestion.Domain.Entities.Student", "Student")
+                        .WithMany("ExamEnrollments")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ExamCall");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Autogestion.Domain.Entities.ExamResult", b =>
+                {
+                    b.HasOne("Autogestion.Domain.Entities.Student", "Student")
+                        .WithMany("ExamResults")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Autogestion.Domain.Entities.Subject", "Subject")
+                        .WithMany("ExamResults")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("Autogestion.Domain.Entities.Prerequisite", b =>
+                {
+                    b.HasOne("Autogestion.Domain.Entities.Subject", "RequiresSubject")
+                        .WithMany("RequiredBy")
+                        .HasForeignKey("RequiresSubjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Autogestion.Domain.Entities.Subject", "Subject")
+                        .WithMany("Prerequisites")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("RequiresSubject");
+
+                    b.Navigation("Subject");
+                });
+
             modelBuilder.Entity("Autogestion.Domain.Entities.Student", b =>
                 {
                     b.HasOne("Autogestion.Domain.Entities.Plan", "Plan")
@@ -170,9 +372,36 @@ namespace Autogestion.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Autogestion.Domain.Entities.ExamCall", b =>
+                {
+                    b.Navigation("Enrollments");
+                });
+
             modelBuilder.Entity("Autogestion.Domain.Entities.Plan", b =>
                 {
                     b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("Autogestion.Domain.Entities.Student", b =>
+                {
+                    b.Navigation("CourseEnrollments");
+
+                    b.Navigation("ExamEnrollments");
+
+                    b.Navigation("ExamResults");
+                });
+
+            modelBuilder.Entity("Autogestion.Domain.Entities.Subject", b =>
+                {
+                    b.Navigation("CourseEnrollments");
+
+                    b.Navigation("ExamCalls");
+
+                    b.Navigation("ExamResults");
+
+                    b.Navigation("Prerequisites");
+
+                    b.Navigation("RequiredBy");
                 });
 #pragma warning restore 612, 618
         }

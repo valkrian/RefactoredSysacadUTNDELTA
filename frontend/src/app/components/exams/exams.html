@@ -1,0 +1,29 @@
+<section class="exams-wrapper">
+  <h2>Mesas de examen</h2>
+
+  <div *ngIf="loading()" class="text-muted">Cargando...</div>
+  <div *ngIf="error()" class="alert alert-danger">{{ error() }}</div>
+
+  <div class="exams-grid">
+    <article class="exam-card" *ngFor="let call of calls()">
+      <h5>{{ call.subjectName }}</h5>
+      <p>Inicio: {{ call.startsAt | date: 'short' }}</p>
+      <p>Fin: {{ call.endsAt | date: 'short' }}</p>
+      <p>Cupo: {{ call.enrolledCount }}/{{ call.capacity }}</p>
+      <button class="btn btn-sm btn-outline-primary" (click)="enroll(call)">
+        Inscribirse
+      </button>
+    </article>
+  </div>
+
+  <h3 class="mt-4">Mis inscripciones</h3>
+  <div *ngIf="enrollments().length === 0" class="text-muted">
+    Sin inscripciones actuales.
+  </div>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let enrollment of enrollments()">
+      {{ enrollment.subjectName }} - {{ enrollment.status }}
+      <span class="text-muted ms-2">{{ enrollment.startsAt | date: 'short' }}</span>
+    </li>
+  </ul>
+</section>

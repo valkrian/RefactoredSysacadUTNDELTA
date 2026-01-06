@@ -7,7 +7,6 @@ namespace Autogestion.Domain.Entities;
 /// </summary>
 public class Prerequisite
 {
-    public int Id { get; set; }
     public int SubjectId { get; set; }
     public int RequiresSubjectId { get; set; }
     public PrerequisiteType Type { get; set; }

@@ -1,0 +1,27 @@
+<section class="courses-wrapper">
+  <h2>Ofertas de cursado</h2>
+
+  <div *ngIf="loading()" class="text-muted">Cargando...</div>
+  <div *ngIf="error()" class="alert alert-danger">{{ error() }}</div>
+
+  <div class="courses-grid">
+    <article class="course-card" *ngFor="let offer of offers()">
+      <h5>{{ offer.subjectName }}</h5>
+      <p>Codigo: {{ offer.code }}</p>
+      <p>Periodo: {{ offer.period }}</p>
+      <button class="btn btn-sm btn-outline-primary" (click)="enroll(offer)">
+        Inscribirse
+      </button>
+    </article>
+  </div>
+
+  <h3 class="mt-4">Mis cursadas</h3>
+  <div *ngIf="enrollments().length === 0" class="text-muted">
+    Sin inscripciones actuales.
+  </div>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let enrollment of enrollments()">
+      {{ enrollment.subjectName }} - {{ enrollment.status }} ({{ enrollment.period }})
+    </li>
+  </ul>
+</section>

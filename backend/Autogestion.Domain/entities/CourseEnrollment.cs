@@ -7,7 +7,6 @@ namespace Autogestion.Domain.Entities;
 /// </summary>
 public class CourseEnrollment
 {
-    public int Id { get; set; }
     public int StudentId { get; set; }
     public int SubjectId { get; set; }
     public string Period { get; set; } = string.Empty;

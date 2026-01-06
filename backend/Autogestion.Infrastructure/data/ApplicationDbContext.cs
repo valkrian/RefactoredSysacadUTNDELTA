@@ -17,14 +17,15 @@ public class ApplicationDbContext : DbContext
     // Cada DbSet mapea una entidad a una tabla
     
     public DbSet<Plan> Plans => Set<Plan>();
-    
 
-    
     public DbSet<Student> Students => Set<Student>();
-    
-    
     public DbSet<Subject> Subjects => Set<Subject>();
-    
+    public DbSet<CourseEnrollment> CourseEnrollments => Set<CourseEnrollment>();
+    public DbSet<ExamCall> ExamCalls => Set<ExamCall>();
+    public DbSet<ExamEnrollment> ExamEnrollments => Set<ExamEnrollment>();
+    public DbSet<Prerequisite> Prerequisites => Set<Prerequisite>();
+
+    public DbSet<ExamResult> ExamResults => Set<ExamResult>();
     
     // OnModelCreating: Método donde configuramos el modelo de datos
     // Se ejecuta cuando EF Core construye el modelo
@@ -128,13 +129,119 @@ public class ApplicationDbContext : DbContext
         // Relación muchos-a-muchos: Plan <-> Subject
         // EF Core necesita una tabla intermedia (PlanSubject)
         modelBuilder.Entity<Plan>()
-            .HasMany(p => p.Subjects)
-            .WithMany(s => s.Plans)
-            .UsingEntity<Dictionary<string, object>>(
-                "PlanSubject",
-                j => j.HasOne<Subject>().WithMany().HasForeignKey("SubjectId"),
-                j => j.HasOne<Plan>().WithMany().HasForeignKey("PlanId")
-            );
-        
+    .HasMany(p => p.Subjects)
+    .WithMany(s => s.Plans)
+    .UsingEntity<Dictionary<string, object>>(
+        "PlanSubject",
+        j => j.HasOne<Subject>().WithMany().HasForeignKey("SubjectId"),
+        j => j.HasOne<Plan>().WithMany().HasForeignKey("PlanId")
+    );
+
+modelBuilder.Entity<CourseEnrollment>(entity =>
+{
+    entity.HasKey(e => new { e.StudentId, e.SubjectId, e.Period });
+
+    entity.Property(e => e.Period)
+        .IsRequired()
+        .HasMaxLength(20);
+
+    entity.Property(e => e.Status)
+        .IsRequired();
+
+    entity.HasOne(e => e.Student)
+        .WithMany(s => s.CourseEnrollments)
+        .HasForeignKey(e => e.StudentId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+    entity.HasOne(e => e.Subject)
+        .WithMany(s => s.CourseEnrollments)
+        .HasForeignKey(e => e.SubjectId)
+        .OnDelete(DeleteBehavior.Restrict);
+});
+
+modelBuilder.Entity<ExamCall>(entity =>
+{
+    entity.HasKey(e => e.Id);
+
+    entity.Property(e => e.StartsAt)
+        .IsRequired();
+
+    entity.Property(e => e.EndsAt)
+        .IsRequired();
+
+    entity.Property(e => e.Capacity)
+        .IsRequired();
+
+    entity.HasOne(e => e.Subject)
+        .WithMany(s => s.ExamCalls)
+        .HasForeignKey(e => e.SubjectId)
+        .OnDelete(DeleteBehavior.Restrict);
+});
+
+modelBuilder.Entity<ExamEnrollment>(entity =>
+{
+    entity.HasKey(e => new { e.StudentId, e.ExamCallId });
+
+    entity.Property(e => e.EnrolledAt)
+        .IsRequired();
+
+    entity.HasOne(e => e.Student)
+        .WithMany(s => s.ExamEnrollments)
+        .HasForeignKey(e => e.StudentId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+    entity.HasOne(e => e.ExamCall)
+        .WithMany(ec => ec.Enrollments)
+        .HasForeignKey(e => e.ExamCallId)
+        .OnDelete(DeleteBehavior.Restrict);
+});
+
+modelBuilder.Entity<ExamResult>(entity =>
+{
+    entity.HasKey(e => new { e.StudentId, e.SubjectId });
+
+    entity.Property(e => e.Date)
+        .IsRequired();
+
+    entity.Property(e => e.Grade)
+        .IsRequired();
+
+    entity.HasOne(e => e.Student)
+        .WithMany(s => s.ExamResults)
+        .HasForeignKey(e => e.StudentId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+    entity.HasOne(e => e.Subject)
+        .WithMany(s => s.ExamResults)
+        .HasForeignKey(e => e.SubjectId)
+        .OnDelete(DeleteBehavior.Restrict);
+});
+
+modelBuilder.Entity<Prerequisite>(entity =>
+{
+    entity.HasKey(e => new { e.SubjectId, e.RequiresSubjectId, e.Type, e.MinimumStatus });
+
+    entity.Property(e => e.SubjectId)
+        .IsRequired();
+
+    entity.Property(e => e.RequiresSubjectId)
+        .IsRequired();
+
+    entity.Property(e => e.Type)
+        .IsRequired();
+
+    entity.Property(e => e.MinimumStatus)
+        .IsRequired();
+
+    entity.HasOne(e => e.Subject)
+        .WithMany(s => s.Prerequisites)
+        .HasForeignKey(e => e.SubjectId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+    entity.HasOne(e => e.RequiresSubject)
+        .WithMany(s => s.RequiredBy)
+        .HasForeignKey(e => e.RequiresSubjectId)
+        .OnDelete(DeleteBehavior.Restrict);
+});
     }
 }

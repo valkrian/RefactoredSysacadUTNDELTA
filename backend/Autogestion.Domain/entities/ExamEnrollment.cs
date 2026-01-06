@@ -7,7 +7,6 @@ namespace Autogestion.Domain.Entities;
 /// </summary>
 public class ExamEnrollment
 {
-    public int Id { get; set; }
     public int StudentId { get; set; }
     public int ExamCallId { get; set; }
     public ExamEnrollmentStatus Status { get; set; }
