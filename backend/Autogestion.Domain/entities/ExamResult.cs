@@ -7,7 +7,6 @@ namespace Autogestion.Domain.Entities;
 /// </summary>
 public class ExamResult
 {
-    public int Id { get; set; }
     public int StudentId { get; set; }
     public int SubjectId { get; set; }
     public DateTime Date { get; set; }
