@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
 
 @Component({
@@ -13,9 +13,17 @@ import { AuthService } from './services/auth.service';
 export class App {
   protected readonly title = 'Autogestion Alumnos';
 
-  constructor(public readonly authService: AuthService) {
+  constructor(
+    public readonly authService: AuthService,
+    private readonly router: Router
+  ) {
     if (this.authService.isAuthenticated()) {
       this.authService.loadMe().subscribe();
     }
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigateByUrl('/login');
   }
 }

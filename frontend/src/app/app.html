@@ -1,10 +1,11 @@
-<div *ngIf="authService.isAuthenticated(); else authless" class="container-fluid app-shell">
+<div *ngIf="authService.initialized(); else loading">
+  <div *ngIf="authService.isAuthenticated(); else authless" class="container-fluid app-shell">
   <div class="row">
     <nav class="col-md-3 col-lg-2 d-md-block sidebar">
       <div class="position-sticky p-3">
         <div class="mb-4">
           <div class="app-header-title">UTN DELTA</div>
-          <p class="app-header-subtitle">Sistema de Autogestion</p>
+          <p class="app-header-subtitle">Sistema de Autogestión</p>
         </div>
 
         <ul class="nav flex-column">
@@ -20,7 +21,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/estado" routerLinkActive="active">
-              Estado Academico
+              Estado Académico
             </a>
           </li>
           <li class="nav-item">
@@ -33,6 +34,11 @@
               Cursado
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/perfil" routerLinkActive="active">
+              Mi perfil
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -40,14 +46,10 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="app-header d-flex justify-content-between align-items-center mb-4">
         <div>
-          <div class="app-header-title">Autogestion Alumnos</div>
-          <p class="app-header-subtitle">Portal academico institucional</p>
+          <div class="app-header-title">Autogestión Alumnos</div>
+          <p class="app-header-subtitle">Portal académico institucional</p>
         </div>
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-primary"
-          (click)="authService.logout()"
-        >
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="logout()">
           Salir
         </button>
       </div>
@@ -56,9 +58,16 @@
     </main>
   </div>
 </div>
+</div>
 
 <ng-template #authless>
   <main class="container py-5">
     <router-outlet />
+  </main>
+</ng-template>
+
+<ng-template #loading>
+  <main class="container py-5">
+    <p class="muted">Cargando...</p>
   </main>
 </ng-template>

@@ -2,7 +2,7 @@
   <div class="login-header">
     <div>
       <p class="login-eyebrow">UTN DELTA</p>
-      <h1>Preinscripcion y Acceso</h1>
+      <h1>Preinscripción y Acceso</h1>
       <p class="muted">
         Ingreso institucional para estudiantes. Usa tu email y contraseña.
       </p>
@@ -43,9 +43,9 @@
       </form>
 
       <div class="login-links">
-        <a href="#" class="link-muted">Olvidaste tu contraseña?</a>
-        <a href="#" class="link-muted">No tenes cuenta? Registrate</a>
-        <a href="#" class="link-muted">Necesitas ayuda? Contactanos</a>
+        <a routerLink="/recover" class="link-muted">Olvidaste tu contraseña?</a>
+        <a routerLink="/help" class="link-muted">Necesitas ayuda? Contactanos</a>
+        <a routerLink="/register" class="link-muted">No tenés cuenta? Registrate</a>
       </div>
 
       <div class="alert alert-danger mt-3" *ngIf="error()">{{ error() }}</div>

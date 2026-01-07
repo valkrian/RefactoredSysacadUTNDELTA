@@ -40,7 +40,7 @@ export class LoginComponent {
       },
       error: () => {
         this.loading.set(false);
-        this.error.set('Credenciales invalidas.');
+        this.error.set('Usuario o contraseña incorrectos.');
       },
     });
   }

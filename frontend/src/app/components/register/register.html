@@ -1,0 +1,44 @@
+<section class="register-shell">
+    <div class="card-elevated">
+        <h2 class="section-title">Registro de estudiante</h2>
+        <p class="muted">Completa tus datos para iniciar el proceso de inscripción.</p>
+
+        <form (ngSubmit)="submit()" class="register-form">
+        <label>
+            Nombre completo
+            <input
+            type="text"
+            name="fullName"
+            [(ngModel)]="fullName"
+            required
+            />
+        </label>
+
+        <label>
+            Email institucional
+            <input
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            required
+            />
+        </label>
+
+        <label>
+            Legajo
+            <input
+            type="text"
+            name="legajo"
+            [(ngModel)]="legajo"
+            required
+            />
+        </label>
+
+        <button class="btn btn-primary" type="submit">Enviar registro</button>
+        </form>
+
+        <p *ngIf="submitted" class="text-success mt-3">
+        Registro enviado. Te contactaremos por correo.
+        </p>
+    </div>
+</section>

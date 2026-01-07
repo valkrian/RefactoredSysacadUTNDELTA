@@ -1,0 +1,40 @@
+<section class="profile-shell">
+    <div class="card-elevated">
+        <h2 class="section-title">Mi perfil</h2>
+
+        <form (ngSubmit)="saveProfile()" class="profile-form">
+        <label>
+            Nombre completo
+            <input [(ngModel)]="fullName" name="fullName" required />
+        </label>
+
+        <label>
+            Email
+            <input [(ngModel)]="email" name="email" required />
+        </label>
+
+        <button class="btn btn-primary" type="submit">Guardar cambios</button>
+        </form>
+    </div>
+
+    <div class="card-elevated">
+        <h3 class="section-title">Cambiar contraseña</h3>
+
+        <form (ngSubmit)="updatePassword()" class="profile-form">
+        <label>
+            Contraseña actual
+            <input [(ngModel)]="currentPassword" name="currentPassword" type="password" required />
+        </label>
+
+        <label>
+            Nueva contraseña
+            <input [(ngModel)]="newPassword" name="newPassword" type="password" required />
+        </label>
+
+        <button class="btn btn-outline-primary" type="submit">Actualizar contraseña</button>
+        </form>
+    </div>
+
+  <p *ngIf="message()" class="text-success mt-3">{{ message() }}</p>
+  <p *ngIf="error()" class="text-danger mt-2">{{ error() }}</p>
+</section>

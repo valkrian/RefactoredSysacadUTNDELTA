@@ -1,0 +1,10 @@
+.register-shell {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: var(--space-xl) 0;
+    }
+
+    .register-form {
+    display: grid;
+    gap: var(--space-md);
+}

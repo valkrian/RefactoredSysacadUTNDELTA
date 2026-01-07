@@ -11,9 +11,14 @@ const TOKEN_KEY = 'autogestion_token';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   readonly me = signal<MeResponse | null>(null);
+  readonly initialized = signal(false);
   private readonly platformId = inject(PLATFORM_ID);
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.initialized.set(true);
+    }
+  }
 
   get token(): string | null {
     if (!isPlatformBrowser(this.platformId)) {
