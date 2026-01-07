@@ -74,6 +74,8 @@ cd RefactoredSysacadUTNDELTA
 ```
 
 ### Configuracion
+
+**credenciales son de DEMO**
 Crear o editar `backend/Autogestion.Api/appsettings.Development.json` (alineado con `docker-compose.yml`):
 ```json
 {
