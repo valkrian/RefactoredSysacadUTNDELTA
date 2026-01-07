@@ -1,0 +1,9 @@
+.dashboard-hero {
+  display: grid;
+  gap: var(--space-xs);
+  background: var(--primary-light);
+}
+
+.dashboard .card {
+  border: none;
+}

@@ -1,17 +1,18 @@
 .courses-wrapper {
   display: grid;
-  gap: 1.5rem;
+  gap: var(--space-lg);
 }
 
 .courses-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
+  gap: var(--space-md);
 }
 
 .course-card {
-  border: 1px solid #dee2e6;
-  border-radius: 12px;
-  padding: 1rem;
-  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  background: var(--background);
+  box-shadow: var(--shadow-sm);
 }
