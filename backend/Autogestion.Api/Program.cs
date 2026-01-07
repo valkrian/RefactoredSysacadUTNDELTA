@@ -1,3 +1,4 @@
+using Autogestion.Application.DTOs;
 using Autogestion.Application.UseCases.Courses;
 using Autogestion.Application.UseCases.Exams;
 using Autogestion.Application.UseCases.Plans;
@@ -239,6 +240,74 @@ app.MapGet("/students/me/course-enrollments", async (IGetCourseEnrollmentsQuery 
     return Results.Ok(result.Value);
 }).RequireAuthorization();
 
+app.MapPut("/me/profile", async (ApplicationDbContext db, ClaimsPrincipal user, UpdateProfileRequest req, CancellationToken ct) =>
+{
+    var studentId = GetStudentId(user);
+    if (studentId is null)
+        return Results.Unauthorized();
+
+    var student = await db.Students.FindAsync([studentId.Value], ct);
+    if (student is null)
+        return Results.NotFound();
+
+    student.FullName = req.FullName;
+    student.Email = req.Email;
+
+    await db.SaveChangesAsync(ct);
+    return Results.Ok();
+}).RequireAuthorization();
+
+
+app.MapPut("/me/password", async (ApplicationDbContext db, ClaimsPrincipal user, ChangePasswordRequest req, CancellationToken ct) =>
+{
+    var studentId = GetStudentId(user);
+    if (studentId is null)
+        return Results.Unauthorized();
+
+    var student = await db.Students.FindAsync([studentId.Value], ct);
+    if (student is null)
+        return Results.NotFound();
+
+    if (student.PasswordHash != req.CurrentPassword)
+        return Results.BadRequest(new { error = "Password incorrecta" });
+
+    student.PasswordHash = req.NewPassword;
+    await db.SaveChangesAsync(ct);
+
+    return Results.Ok();
+}).RequireAuthorization();
+
+
+
+
+app.MapGet("/me/profile", async (ApplicationDbContext dbContext, ClaimsPrincipal user, CancellationToken ct) =>
+{
+    var studentId = GetStudentId(user);
+    if (studentId is null)
+    {
+        return Results.Unauthorized();
+    }
+
+    var student = await dbContext.Students
+        .AsNoTracking()
+        .FirstOrDefaultAsync(s => s.Id == studentId.Value, ct);
+
+    if (student is null)
+    {
+        return Results.NotFound();
+    }
+
+    var profileDto = new ProfileDto
+    {
+        StudentId = student.Id,
+        FullName = student.FullName,
+        Email = student.Email,
+        Legajo = student.Legajo
+    };
+
+    return Results.Ok(profileDto);
+}).RequireAuthorization();
+
 static int? GetStudentId(ClaimsPrincipal user)
 {
     var claim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -267,3 +336,5 @@ record LoginResponse(string Token, int StudentId, string FullName, string Email)
 record MeResponse(int StudentId, string FullName, string Email, int PlanId);
 record EnrollExamRequest(int ExamCallId);
 record EnrollCourseRequest(int SubjectId, string Period);
+record UpdateProfileRequest(string FullName, string Email);
+record ChangePasswordRequest(string CurrentPassword, string NewPassword);
