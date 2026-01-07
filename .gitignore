@@ -69,3 +69,6 @@ appsettings.Development.json
 *.bak
 *.dump
 /db-data/
+
+# Frontend build/cache
+frontend/.angular/
