@@ -1,0 +1,10 @@
+.table-responsive {
+  margin-top: var(--space-md);
+}
+
+.table {
+  background: var(--background);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}

@@ -1,0 +1,25 @@
+<section class="recover-shell">
+    <div class="card-elevated">
+        <h2 class="section-title">Recuperar contraseña</h2>
+        <p class="muted">Te enviaremos instrucciones a tu correo.</p>
+
+        <form (ngSubmit)="submit()" class="recover-form">
+        <label>
+            Email
+            <input
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            placeholder="tu@utn.edu.ar"
+            required
+            />
+        </label>
+
+        <button class="btn btn-primary" type="submit">Enviar</button>
+        </form>
+
+        <p *ngIf="submitted" class="text-success mt-3">
+        Solicitud enviada. Revisá tu correo.
+        </p>
+    </div>
+</section>

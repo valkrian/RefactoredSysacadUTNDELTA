@@ -1,0 +1,10 @@
+.recover-shell {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: var(--space-xl) 0;
+    }
+
+    .recover-form {
+    display: grid;
+    gap: var(--space-md);
+}

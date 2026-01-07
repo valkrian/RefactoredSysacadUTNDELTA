@@ -1,0 +1,77 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.dll
+*.pdb
+*.exe
+
+## Visual Studio
+.vs/
+*.userosscache
+*.sln.docstates
+
+## Rider
+.idea/
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+## User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## OS
+.DS_Store
+Thumbs.db
+
+## IDE
+.vscode/
+*.swp
+*.swo
+*~
+##docker env
+.env
+.env.local
+
+## App settings (local)
+appsettings.json
+appsettings.Development.json
+
+
+## Database (local)
+*.db
+*.sqlite
+*.sqlite3
+*.mdf
+*.ldf
+*.bak
+*.dump
+/db-data/
+
+# Frontend build/cache
+frontend/.angular/
+
+frontend/node_modules/
+

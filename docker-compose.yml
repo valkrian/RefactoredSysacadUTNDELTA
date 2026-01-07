@@ -1,0 +1,47 @@
+# docker-compose.yml
+# confing for docker comp
+
+services:
+  # Servicios = contenedores que queremos ejecutar
+  # En este caso, solo PostgreSQL----*
+  
+  postgres:
+    # Nombre del servicio (para conectar)
+    image: postgres:16-alpine
+    # Imagen de Docker a usar:
+    # - postgres:16 = PostgreSQL versión 16
+    # - alpine = versión ligera
+    
+    container_name: autogestion-postgres
+    # Nombre del contenedor
+    
+    environment:
+      # Variables de entorno que PostgreSQL usa para configuración
+      # Para producción, usar archivo .env
+      POSTGRES_DB: ${POSTGRES_DB:-autogestion_db}
+      POSTGRES_USER: ${POSTGRES_USER:-autogestion_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-autogestion_password}
+
+      
+    
+    ports:
+      # Mapeo de puertos
+      - "5433:5432" # host:contenedor -- mi puerto local
+      
+    
+    volumes:
+      # Volúmenes = persistencia de datos
+      # Si borro el contenedor, los datos se mantienen igual
+      - postgres_data:/var/lib/postgresql/data
+      # postgres_data es un volumen nombrado (esto no lo sabía, investigar)
+    
+
+
+volumes:
+  # Definición de volúmenes nombrados
+  postgres_data:
+    # Volumen para persistir los datos de PostgreSQL
+    # Se crea automáticamente la primera vez que ejecutas docker-compose up
+
+    
+# 3 docker files uno para cada parte del programa---

@@ -1,0 +1,34 @@
+<section class="help-shell">
+    <div class="card-elevated">
+        <h2 class="section-title">Centro de ayuda</h2>
+        <p class="muted">Contanos tu consulta y te responderemos a la brevedad.</p>
+
+        <form (ngSubmit)="submit()" class="help-form">
+        <label>
+            Tema
+            <input
+            type="text"
+            name="topic"
+            [(ngModel)]="topic"
+            required
+            />
+        </label>
+
+        <label>
+            Mensaje
+            <textarea
+            name="message"
+            [(ngModel)]="message"
+            rows="4"
+            required
+            ></textarea>
+        </label>
+
+        <button class="btn btn-primary" type="submit">Enviar consulta</button>
+        </form>
+
+        <p *ngIf="submitted" class="text-success mt-3">
+        Mensaje enviado. Te responderemos pronto.
+        </p>
+    </div>
+</section>

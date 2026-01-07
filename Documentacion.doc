@@ -1,0 +1,104 @@
+Documentacion unificada - Autogestion Alumnos (v1.0)
+
+1) Objetivo
+- Modernizar la experiencia de Autogestion Alumnos (demo portfolio) con UI administrativa.
+- Backend realista con reglas de negocio (correlatividades) y datos ficticios.
+- Base PostgreSQL local via Docker.
+
+2) Stack
+Frontend: Angular (standalone) + Bootstrap
+Backend: .NET 8 Web API + Swagger/OpenAPI
+DB: PostgreSQL (Docker)
+
+3) Arquitectura
+- Autogestion.Domain: entidades y reglas puras (sin EF, sin HTTP)
+- Autogestion.Application: DTOs, casos de uso e interfaces
+- Autogestion.Infrastructure: EF Core, queries/commands e implementaciones
+- Autogestion.Api: endpoints, DI, middleware, Swagger
+
+4) Modulos MVP
+- Plan de estudios
+- Estado academico
+- Examenes (consultas e inscripcion)
+- Cursado (ofertas e inscripcion)
+- Perfil (lectura/actualizacion)
+
+5) Reglas de negocio (resumen)
+- Correlatividades:
+  - Para cursar: requiere materias regularizadas o aprobadas segun la regla.
+  - Para rendir: requiere materias aprobadas.
+- Inscripcion:
+  - No permitir duplicados.
+  - Respetar cupos en mesas de examen.
+  - Evitar choques de horario.
+
+6) Modelo de datos (resumen)
+- students (id, legajo, full_name, email, password_hash, plan_id, created_at)
+- plans (id, name, career, year_version)
+- subjects (id, code, name, year, term)
+- plan_subjects (plan_id, subject_id)
+- prerequisites (subject_id, requires_subject_id, requirement_type, min_status)
+- course_enrollments (id, student_id, subject_id, period, status)
+- exam_calls (id, subject_id, starts_at, ends_at, capacity)
+- exam_enrollments (id, student_id, exam_call_id, status, enrolled_at)
+- exam_results (id, student_id, subject_id, date, grade, result_status)
+
+7) API (endpoints principales)
+Auth:
+- POST /auth/login
+- GET /me
+Plan y estado:
+- GET /students/me/plan
+- GET /students/me/status
+Examenes:
+- GET /exam-calls
+- POST /students/me/exam-enrollments
+- GET /students/me/exam-enrollments
+Cursado:
+- GET /course-offers
+- POST /students/me/course-enrollments
+- GET /students/me/course-enrollments
+Perfil:
+- GET /me/profile
+- PUT /me/profile
+- PUT /me/password
+
+8) Frontend (rutas principales)
+- /login
+- /dashboard
+- /plan
+- /estado
+- /examenes
+- /cursado
+- /perfil
+- /registro
+- /recuperar
+- /ayuda
+
+9) Ejecucion local
+Backend + DB:
+- Levantar PostgreSQL con docker-compose.
+- Configurar cadena en backend/Autogestion.Api/appsettings.Development.json:
+  DefaultConnection: Host=localhost;Port=5432;Database=Bd_sysacad;Username=postgres;Password=admin
+- Aplicar migraciones:
+  dotnet ef database update --project ../Autogestion.Infrastructure/Autogestion.Infrastructure.csproj --startup-project ./Autogestion.Api.csproj
+- Ejecutar API:
+  dotnet run
+- Swagger: http://localhost:5018/swagger
+
+Frontend:
+- cd frontend
+- npm install
+- npm start
+- App: http://localhost:4200
+
+10) Semillas (seed)
+- En Development, el seed corre si SeedData=true en appsettings.Development.json.
+- Para desactivar: SeedData=false.
+
+11) Decisiones de arquitectura (ADR)
+- Monolito modular con Clean Architecture.
+- PostgreSQL via Docker Compose y EF Core.
+- Angular + Bootstrap para UI.
+- Enums explicitos para estados y reglas de correlatividad en Domain.
+- CQRS liviano con Result para respuestas consistentes.

@@ -1,0 +1,12 @@
+.profile-shell {
+    display: grid;
+    gap: var(--space-lg);
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--space-xl) 0;
+    }
+
+    .profile-form {
+    display: grid;
+    gap: var(--space-md);
+}

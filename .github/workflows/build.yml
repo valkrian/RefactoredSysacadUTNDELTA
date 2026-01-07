@@ -1,0 +1,109 @@
+# Workflow para build automático
+# Se ejecuta en cada push y pull request
+# validar código antes de mergear
+#ejecutar tests
+#analizar calidad
+#construir artefactos
+#desplegar a entornos reales
+
+name: Build and Test
+# Nombre del workflow (aparece en la pestaña Actions de GitHub)
+
+on:
+  # Eventos que activan el workflow
+  push:
+    # push clasico
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+      # Solo en estas ramas (puedes ajustar según necesites)
+  
+  pull_request:
+    # Se ejecuta cuando se crea o actualiza un Pull Request
+    branches:
+      - main
+      - develop
+
+jobs:
+  # Jobs = pasos que ejecuta el programa
+  
+  build-api:
+    # Job para compilar la API de .NET
+    name: Build .NET API
+    runs-on: ubuntu-latest
+    # Sistema operativo del runner (máquina virtual de GitHub)
+    # ubuntu-latest = última versión de Ubuntu
+    
+    steps:
+      # Pasos = acciones que se ejecutan secuencialmente
+      
+      - name: Checkout code
+        # Paso 1: Descargar el código del repositorio
+        uses: actions/checkout@v4
+        # es la acción de GitHub para descargar código
+        # @v4 = versión 4 (siempre tengo que usar versiones específicas)
+      
+      - name: Setup .NET
+        # Paso 2: Instalar .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+          # Versión de .NET a instalar
+          # 8.0.x = última versión de .NET 8
+      
+      - name: Restore dependencies
+        # Paso 3: Restaurar paquetes NuGet
+        run: dotnet restore backend/Autogestion.sln
+        # Restaura todas las dependencias de la solución
+        working-directory: .
+        # Directorio desde donde ejecutar el comando
+      
+      - name: Build solution
+        # Paso 4: Compilar la solución
+        run: dotnet build backend/Autogestion.sln --no-restore -c Release
+        # --no-restore = no restaurar (ya lo hicimos antes)
+        # -c Release = configuración Release (optimizada)
+      
+      - name: Test (if exists)
+        # Paso 5: Ejecutar tests (si existen)
+        run: dotnet test backend/Autogestion.sln --no-build --verbosity normal
+        # --no-build = no compilar (ya lo hicimos)
+        # --verbosity normal = mostrar información normal
+        continue-on-error: true
+        # Continúa aunque falle (por si no hay tests aún)
+
+  build-web:
+    # Job para compilar la aplicación Angular
+    name: Build Angular Web
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        # Paso 1: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          # Versión de Node.js (Angular requiere Node 18+)
+          cache: 'npm'
+          # Cache de npm para acelerar builds
+          cache-dependency-path: frontend/package-lock.json
+          # Ruta al package-lock.json para el cache
+      
+      - name: Install dependencies
+        # Paso 2: Instalar dependencias de npm
+        run: npm ci
+        # npm ci = clean install (más rápido y confiable que npm install)
+        working-directory: frontend
+      
+      - name: Build Angular app
+        # Paso 3: Compilar la aplicación Angular
+        run: npm run build
+        # Ejecuta el script "build" definido en package.json
+        working-directory: frontend
+        env:
+          # Variables de entorno para el build
+          NODE_ENV: production
